@@ -17,7 +17,7 @@ def get_place_data(request):
     print('setting up defaults')
 
     #setting up Defaults
-    key = 'AIzaSyDTbR7fIIdPycA3IoyMWDMrYjIMsVyMOWs'
+    key = ''
     client = googlemaps.Client(key)
     location = (51.5070858,-0.0936576)
     type = 'restaurant'
