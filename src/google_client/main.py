@@ -16,16 +16,14 @@ def get_place_data(request):
 
     print('setting up defaults')
 
-    #setting up Defaults
-    key = ''
+    # setting up Defaults
+    key = 'AIzaSyCsnxSmyysULqtrBDjAMW7j-F0cz2FVeoM'
     client = googlemaps.Client(key)
     location = (51.5070858,-0.0936576)
     type = 'restaurant'
     language = 'en-GB'
     region = 'GB'
     radius = 5000
-
-
 
     request_args = request.args
     if request_args and 'lat' in request_args and 'long' in request_args:
@@ -55,13 +53,7 @@ def get_place_data(request):
     return 'Hello {}!'.format(escape(json.dumps(hits)) )
 
 
-#for local test
 if __name__ == "__main__":
-    from flask import Flask, request
-    app = Flask(__name__)
-
-    @app.route('/')
-    def index():
-        return get_place_data(request)
-
-    app.run('127.0.0.1', 8000, debug=True)
+    # Local testing
+    from src.utils.local_func_runner import run_func_local
+    run_func_local(get_place_data)
