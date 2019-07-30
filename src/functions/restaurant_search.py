@@ -21,11 +21,14 @@ def restaurant_search(request):
     client = 'GOOGLE'
     client = initialise_client(client)
 
-    loc = (51.5070858, -0.0936576)
-    type = 'restaurant'
+    loc = (51.517242, -0.093809)
+    location_type = 'restaurant'
     language = 'en-GB'
     region = 'GB'
-    radius = 5000
+    radius = 1000
+    min_price = 0
+    max_price = 4
+    open_now = True
 
     # Override defaults based on request args
     request_args = request.args
@@ -33,21 +36,34 @@ def restaurant_search(request):
         loc = (request_args['lat'], request_args['long'])
 
     if request_args and 'search' in request_args:
-        name = request_args['search']
+        search_term = request_args['search']
     else:
-        name = 'restaurant'
+        search_term = 'restaurant'
 
     print('location is ', loc)
-    print('search query is', name)
-    result = client.places(name, location=loc, radius=radius, min_price=0, max_price=4, open_now=True, type=type)
+    print('search query is', search_term)
+    result = client.places_nearby(keyword=search_term, location=loc, radius=radius, min_price=min_price, max_price=max_price,
+                                  open_now=open_now, type=location_type)
 
     print(result)
 
     hits = []
-    if result and ('status' in result) and result['status'] == 'OK' :
-        hits = [{"name" : r['name'], "address" : r['formatted_address'], "rating" : r['rating']} for r in result['results']]
+    if result and 'status' in result and result['status'] == 'OK':
+        hits = [
+            {
+                r["place_id"]: {
+                    "name": r['name'],
+                    "vicinity": r['vicinity'],
+                    "loc": r['geometry']["location"],
+                    "rating": r['rating'],
+                    "num_times_rated": r['user_ratings_total'],
+                    "price_level": r["price_level"]
+                }
+            }
+        for r in result['results'] if 'permanently_closed' not in r
+        ]
 
-    return 'Hello {}!'.format(escape(json.dumps(hits)) )
+    return json.dumps(hits)
 
 
 if __name__ == "__main__":
