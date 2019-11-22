@@ -3,7 +3,7 @@ alembic==0.9.10
 anaconda-client==1.6.9
 anaconda-navigator==1.7.0
 anaconda-project==0.8.2
-apache-airflow==1.10.3
+apache-airflow==1.10.6
 applicationinsights==0.11.8
 appnope==0.1.0
 appscript==1.0.1
