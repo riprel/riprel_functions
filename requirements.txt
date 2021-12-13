@@ -113,7 +113,7 @@ libarchive-c==2.8
 llvmlite==0.21.0
 locket==0.2.0
 lockfile==0.12.2
-lxml==4.1.1
+lxml==4.6.5
 Mako==1.0.12
 Markdown==2.6.11
 MarkupSafe==1.1.1
